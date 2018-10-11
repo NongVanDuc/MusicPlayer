@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Music</string>
+    <string name="artist">Nghệ sĩ</string>
+    <string name="album">Album</string>
+    <string name="list_play">Danh sách phát</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="addList">Tạo danh sách nhạc mới</string>
+    <string name="unknown_album">Album Unknown</string>
+    <string name="unknown_artist">Artist Unknown</string>
+    <string name="song"> Bài hát</string>
+    <string name="play_all">Chơi tất cả bài hát</string>
+    <string name="addtolist">Thêm vào playlist</string>
+    <string name="set_to_ring">Đặt làm nhạc chuông</string>
+    <string name="remove">Xóa</string>
+    <string name="reName">Đổi tên</string>
+    <string name="now_play_ing">Now Playing</string>
+</resources>
