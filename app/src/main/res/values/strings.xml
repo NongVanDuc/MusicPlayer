@@ -12,8 +12,24 @@
     <string name="song"> Bài hát</string>
     <string name="play_all">Chơi tất cả bài hát</string>
     <string name="addtolist">Thêm vào playlist</string>
+    <string name="setted_to_ring">Đặt làm nhạc chuông thành công !</string>
     <string name="set_to_ring">Đặt làm nhạc chuông</string>
     <string name="remove">Xóa</string>
     <string name="reName">Đổi tên</string>
     <string name="now_play_ing">Now Playing</string>
+    <string name="songAdded">Thêm vào danh sách thành công !</string>
+    <string name="addToList">Thêm vào danh sách</string>
+    <string name="error">Xảy ra lỗi khi đặt làm nhạc chuông !</string>
+    <string name="error_delete">Xảy ra lỗi khi xóa !</string>
+    <string name="share_song">Chia sẻ bài hát</string>
+    <string name="deleted">Đã xóa 1 bài hát </string>
+    <string name="delete">Xóa bài hát ?</string>
+    <string name="confirm_delete">Bạn có chắc chắn muốn xóa bài hát </string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 </resources>

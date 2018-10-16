@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vanduc.musicplayer.R;
-import com.vanduc.musicplayer.function.MusicPlayer;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.model.Song;
 

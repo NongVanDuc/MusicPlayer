@@ -1,14 +1,13 @@
 package com.vanduc.musicplayer.dataloader;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 
 import com.vanduc.musicplayer.model.Playlist;
-import com.vanduc.musicplayer.until.TimberUtils;
+import com.vanduc.musicplayer.until.ControlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ public class PlaylistLoader {
 
                 final String name = mCursor.getString(1);
 
-                final int songCount = TimberUtils.getSongCountForPlaylist(context, id);
+                final int songCount = ControlUtils.getSongCountForPlaylist(context, id);
 
                 final Playlist playlist = new Playlist(id, name, songCount);
 
@@ -48,18 +47,18 @@ public class PlaylistLoader {
 //        final Resources resources = context.getResources();
 //
 //        /* Last added list */
-//        final Playlist lastAdded = new Playlist(TimberUtils.PlaylistType.LastAdded.mId,
-//                resources.getString(TimberUtils.PlaylistType.LastAdded.mTitleId), -1);
+//        final Playlist lastAdded = new Playlist(ControlUtils.PlaylistType.LastAdded.mId,
+//                resources.getString(ControlUtils.PlaylistType.LastAdded.mTitleId), -1);
 //        mPlaylistList.add(lastAdded);
 //
 //        /* Recently Played */
-//        final Playlist recentlyPlayed = new Playlist(TimberUtils.PlaylistType.RecentlyPlayed.mId,
-//                resources.getString(TimberUtils.PlaylistType.RecentlyPlayed.mTitleId), -1);
+//        final Playlist recentlyPlayed = new Playlist(ControlUtils.PlaylistType.RecentlyPlayed.mId,
+//                resources.getString(ControlUtils.PlaylistType.RecentlyPlayed.mTitleId), -1);
 //        mPlaylistList.add(recentlyPlayed);
 //
 //        /* Top Tracks */
-//        final Playlist topTracks = new Playlist(TimberUtils.PlaylistType.TopTracks.mId,
-//                resources.getString(TimberUtils.PlaylistType.TopTracks.mTitleId), -1);
+//        final Playlist topTracks = new Playlist(ControlUtils.PlaylistType.TopTracks.mId,
+//                resources.getString(ControlUtils.PlaylistType.TopTracks.mTitleId), -1);
 //        mPlaylistList.add(topTracks);
 //    }
 

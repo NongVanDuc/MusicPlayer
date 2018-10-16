@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.vanduc.musicplayer.fragments.FragmentListPlay;
-import com.vanduc.musicplayer.function.MusicPlayer;
 import com.vanduc.musicplayer.model.Song;
+import com.vanduc.musicplayer.until.ControlUtils;
 
 public class CreatePlaylistDialog extends DialogFragment {
 
@@ -44,7 +44,7 @@ public class CreatePlaylistDialog extends DialogFragment {
             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
 
                 //long[] songs = getArguments().getLongArray("songs");
-                long playistId = MusicPlayer.createPlaylist(getActivity(), input.toString());
+                long playistId = ControlUtils.createPlaylist(getActivity(), input.toString());
 
                 if (playistId != -1) {
 //                    if (songs != null && songs.length != 0)

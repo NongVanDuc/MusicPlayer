@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -50,7 +52,6 @@ public class FragmentPlayListSong extends Fragment {
         activity = (Activity) context;
         mItemClickPlaySong = (ItemClickPlaySong) activity;
     }
-
     public void setmItemClickPlaySong(ItemClickPlaySong mItemClickPlaySong) {
         this.mItemClickPlaySong = mItemClickPlaySong;
     }
@@ -78,6 +79,12 @@ public class FragmentPlayListSong extends Fragment {
         }
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolBar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mRcvListAlbumSong.setLayoutManager(linearLayoutManager);
         mSongList = PlaylistSongLoader.getSongsInPlaylist(getActivity(),playListId);
@@ -91,7 +98,7 @@ public class FragmentPlayListSong extends Fragment {
 
             @Override
             public void onIconClick(View view, int postion) {
-                SongOptionDialog.newInstance().show(getActivity().getSupportFragmentManager(), "OPTION_MORE");
+                //SongOptionDialog.newInstance().show(getActivity().getSupportFragmentManager(), "OPTION_MORE");
             }
         });
         mRcvListAlbumSong.setAdapter(mSongAdapter);

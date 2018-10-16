@@ -7,10 +7,12 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.dataloader.PlaylistLoader;
-import com.vanduc.musicplayer.function.MusicPlayer;
 import com.vanduc.musicplayer.model.Playlist;
 import com.vanduc.musicplayer.model.Song;
+import com.vanduc.musicplayer.until.ControlUtils;
+import com.vanduc.musicplayer.until.ResUtil;
 
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class AddPlaylistDialog extends DialogFragment {
         for (int i = 0; i < playlists.size(); i++) {
             chars[i + 1] = playlists.get(i).getName();
         }
-        return new MaterialDialog.Builder(getActivity()).title("Add to playlist").items(chars).itemsCallback(new MaterialDialog.ListCallback() {
+        return new MaterialDialog.Builder(getActivity()).title(ResUtil.getInstance().getString(R.string.addToList)).items(chars).itemsCallback(new MaterialDialog.ListCallback() {
             @Override
             public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                 long[] songs = getArguments().getLongArray("songs");
@@ -50,7 +52,7 @@ public class AddPlaylistDialog extends DialogFragment {
                     return;
                 }
 
-                MusicPlayer.addToPlaylist(getActivity(), songs, playlists.get(which - 1).getId());
+                ControlUtils.addToPlaylist(getActivity(), songs, playlists.get(which - 1).getId());
                 dialog.dismiss();
 
             }

@@ -7,15 +7,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.adapter.SongAdapter;
 import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
@@ -61,7 +64,6 @@ public class FragmentAlbumSong extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_album_song, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -78,6 +80,12 @@ public class FragmentAlbumSong extends Fragment {
         }
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolBar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             mRcvListAlbumSong.setLayoutManager(linearLayoutManager);
             AlbumSongLoader albumSongLoader = new AlbumSongLoader(getActivity());
@@ -93,7 +101,7 @@ public class FragmentAlbumSong extends Fragment {
 
                 @Override
                 public void onIconClick(View view, int postion) {
-                    SongOptionDialog.newInstance().show(getActivity().getSupportFragmentManager(), "OPTION_MORE");
+                    //SongOptionDialog.newInstance().show(getActivity().getSupportFragmentManager(), "OPTION_MORE");
                 }
             });
             mRcvListAlbumSong.setAdapter(mSongAdapter);

@@ -2,10 +2,12 @@ package com.vanduc.musicplayer.fragments;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,11 +19,15 @@ import android.view.ViewGroup;
 import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.adapter.SongAdapter;
 import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
+import com.vanduc.musicplayer.dialogs.DiaLogSongOption;
 import com.vanduc.musicplayer.dialogs.SongOptionDialog;
+import com.vanduc.musicplayer.interFace.IconClickListener;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.interFace.ItemClickPlaySong;
+import com.vanduc.musicplayer.interFace.UpdateFragment;
 import com.vanduc.musicplayer.model.Song;
 import com.vanduc.musicplayer.dataloader.SongLoader;
+import com.vanduc.musicplayer.screens.HomeActivity;
 import com.vanduc.musicplayer.until.StorageUtil;
 
 import java.util.ArrayList;
@@ -29,24 +35,35 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentSong extends Fragment{
+public class FragmentSong extends Fragment {
     private SongLoader mSongLoader;
     private ArrayList<Song> mSongList;
     private RecyclerView mRecyclerView;
     public static final String BROADCAST_PLAY_NEW_AUDIO = "com.vanduc.musicplayer.PlayNewAudio";
     private static final String TAG = "MainActivity";
-    private Activity activity ;
+    private Activity activity;
     private ItemClickPlaySong mItemClickPlaySong;
+    private IconClickListener mIconClickListener;
+    private SongAdapter songAdapter;
+    private UpdateFragment updateFragment;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = (Activity) context;
+        //Dialog dialogFragment = new DiaLogSongOption(activity, this,  postion);
         mItemClickPlaySong = (ItemClickPlaySong) activity;
+        //mIconClickListener = (IconClickListener) dialogFragment;
+    }
+
+    public void setmIconClickListener(IconClickListener mIconClickListener) {
+        this.mIconClickListener = mIconClickListener;
     }
 
     public void setmItemClickPlaySong(ItemClickPlaySong mItemClickPlaySong) {
         this.mItemClickPlaySong = mItemClickPlaySong;
     }
+
     public FragmentSong() {
         // Required empty public constructor
     }
@@ -55,7 +72,7 @@ public class FragmentSong extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragment\
         return inflater.inflate(R.layout.fragment_songs, container, false);
     }
 
@@ -76,17 +93,22 @@ public class FragmentSong extends Fragment{
         storage.storeAudio(mSongList);
         //show Recycleview
 
-        SongAdapter songAdapter = new SongAdapter(getActivity(), mSongList, new ItemClickListener() {
+        songAdapter = new SongAdapter(getActivity(), mSongList, new ItemClickListener() {
             @Override
             public void onItemClick(View view, final int postion) {
-                if(mItemClickPlaySong!=null){
-                    mItemClickPlaySong.onItemClickListener(mSongList,postion);
+                if (mItemClickPlaySong != null) {
+                    mItemClickPlaySong.onItemClickListener(mSongList, postion);
                 }
             }
 
             @Override
             public void onIconClick(View view, int postion) {
-                SongOptionDialog.newInstance().show(getActivity().getSupportFragmentManager(), "OPTION_MORE");
+                DiaLogSongOption diaLogSongOption = new DiaLogSongOption(getActivity(), postion, mSongList, songAdapter);
+                diaLogSongOption.show();
+                //SongOptionDialog.newInstance(mSongList.get(postion)).show(getActivity().getSupportFragmentManager(), "OPTION_MORE");
+                if (mIconClickListener != null) {
+                    mIconClickListener.onItemClickListener(mSongList, postion);
+                }
             }
         });
         Log.e("onCreate: ", mSongList.size() + "");
@@ -97,7 +119,7 @@ public class FragmentSong extends Fragment{
     }
 
     private void initView(View view) {
-        mRecyclerView =view.findViewById(R.id.rcv_list_music);
+        mRecyclerView = view.findViewById(R.id.rcv_list_music);
     }
 
 }

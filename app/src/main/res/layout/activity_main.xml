@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/root_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/bg_home"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
     sothree:umanoPanelHeight="60dp"
     sothree:umanoShadowHeight="2dp"
-    tools:context=".screens.MainActivity">
+    tools:context=".screens.HomeActivity">
     <com.sothree.slidinguppanel.SlidingUpPanelLayout
         xmlns:sothree="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sliding_layout"
@@ -25,12 +25,13 @@
         android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="match_parent"
+            android:background="@drawable/bg_now_play"
             android:layout_height="match_parent">
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appBarLayout"
-                android:background="@drawable/bg_toolbar"
+                android:background="#b4000000"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="100dp">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -50,6 +51,7 @@
                         android:src="@drawable/ic_search"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+
                 </RelativeLayout>
 
                 <android.support.design.widget.TabLayout
@@ -63,51 +65,60 @@
 
                 </android.support.design.widget.TabLayout>
             </android.support.design.widget.AppBarLayout>
+            <RelativeLayout
+                android:background="@drawable/bg_now_play"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/appBarLayout"
+                android:layout_height="wrap_content">
                 <android.support.v4.view.ViewPager
-                    android:layout_below="@+id/appBarLayout"
+
                     android:id="@+id/viewPager"
-                    android:background="#38000000"
+                    android:background="#bb000000"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 </android.support.v4.view.ViewPager>
+            </RelativeLayout>
+
         </RelativeLayout>
     </FrameLayout>
-        <RelativeLayout
-            android:id="@+id/lrl_play_audio"
-            android:orientation="vertical"
-            android:background="@drawable/bg_now_play"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
             <RelativeLayout
-                android:background="#c9000000"
+                android:id="@+id/lrl_play_audio"
+                android:orientation="vertical"
+                android:background="#0a101c"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <android.support.v7.widget.Toolbar
-                    android:visibility="gone"
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/toolbarNowPlaying"
-                    android:layout_alignParentTop="true"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:theme="@style/CustomActionBar"/>
-                <include layout="@layout/layout_control_bottom"></include>
-                <include layout="@layout/layout_audio_infor"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:layout_above="@+id/layoutControl"
-                    ></include>
-                <include
-                    android:id="@+id/layoutControl"
-                    layout="@layout/layout_control_audio"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:paddingBottom="20dp"
-                    android:layout_alignParentBottom="true"
-                    ></include>
-            </RelativeLayout>
+                    android:layout_height="match_parent">
+                    <android.support.v7.widget.Toolbar
+                        android:visibility="gone"
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/toolbarNowPlaying"
+                        android:layout_alignParentTop="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:theme="@style/CustomActionBar"/>
+                    <include
+                        android:id="@+id/lrl_control_bottom"
+                        layout="@layout/layout_control_bottom"></include>
+                    <include layout="@layout/layout_audio_infor"
+                        android:id="@+id/layout_audio_infor"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/toolbarNowPlaying"
+                        android:layout_above="@+id/layoutControl"
+                        ></include>
+                    <include
+                        android:id="@+id/layoutControl"
+                        layout="@layout/layout_control_audio"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentBottom="true"
+                        ></include>
+                </RelativeLayout>
             </RelativeLayout>
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>

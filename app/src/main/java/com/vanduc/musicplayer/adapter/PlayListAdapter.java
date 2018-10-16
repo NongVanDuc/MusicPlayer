@@ -35,7 +35,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.AudioH
     @Override
     public AudioHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.item_play_list,parent,false);
+            View view = layoutInflater.inflate(R.layout.item_list_play,parent,false);
 
             return new AudioHolder(view);
         }
@@ -50,22 +50,21 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.AudioH
         return mPlaylists.size();
     }
     public class AudioHolder extends RecyclerView.ViewHolder {
-        public ImageView imgAlbumName;
-        public TextView tvAlbumName;
-        public LinearLayout lrlAlbumDetail;
-        public TextView tvCountSong;
+        private TextView tvPlayList;
+        private TextView tvCountSong;
         public ImageView imgMoreOption;
 
         public AudioHolder(@NonNull View itemView) {
             super(itemView);
-            imgAlbumName = (ImageView) itemView.findViewById(R.id.img_album_name);
-            tvAlbumName = (TextView) itemView.findViewById(R.id.tv_album_name);
-            lrlAlbumDetail = (LinearLayout) itemView.findViewById(R.id.lrl_album_detail);
             tvCountSong = (TextView) itemView.findViewById(R.id.tv_count_song);
             imgMoreOption = (ImageView) itemView.findViewById(R.id.img_song_more_option);
+            tvPlayList = (TextView) itemView.findViewById(R.id.tv_play_list_name);
+
+
+
         }
         public void bind(final Playlist item , final ItemClickListener itemClickListener) {
-            tvAlbumName.setText(item.getName());
+            tvPlayList.setText(item.getName());
             tvCountSong.setText(String.valueOf(item.getSongCount()));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {

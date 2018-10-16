@@ -11,9 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vanduc.musicplayer.R;
-import com.vanduc.musicplayer.function.MusicPlayer;
+import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.model.Album;
+import com.vanduc.musicplayer.model.Song;
+import com.vanduc.musicplayer.until.ImageUtils;
 
 import java.util.List;
 
@@ -42,6 +44,14 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AudioHolder>
     @Override
     public void onBindViewHolder(@NonNull AudioHolder holder, int i) {
         holder.bind(mAlbum.get(i), mItemClickListener);
+        AlbumSongLoader songLoader = new AlbumSongLoader(mContext);
+        Song songs = songLoader.getSongFromCursor(mAlbum.get(i).getId());
+        Bitmap bitmapAlbum = songs.getCover(mContext);
+        if(bitmapAlbum != null){
+            holder.imgAlbum.setImageBitmap(bitmapAlbum);
+        }
+        else holder.imgAlbum.setImageResource(R.drawable.icon_album);
+
 
 
     }

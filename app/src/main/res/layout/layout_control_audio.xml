@@ -4,8 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_alignParentBottom="true"
-    android:background="#2f000000"
-    android:paddingBottom="20dp"
     android:layout_height="wrap_content">
     <LinearLayout
         android:layout_centerVertical="true"
@@ -37,9 +35,9 @@
             android:background="@null"
             android:id="@+id/imb_play_song"
             android:src="@drawable/ic_play_circle_outline_white"
-            android:layout_width="55dp"
+            android:layout_width="65dp"
             android:layout_weight="1"
-            android:layout_height="55dp" />
+            android:layout_height="65dp" />
         <ImageButton
             android:scaleType="fitCenter"
             android:background="@null"
@@ -51,8 +49,8 @@
         <ImageButton
             android:scaleType="fitCenter"
             android:background="@null"
-            android:id="@+id/imb_favorite"
-            android:src="@drawable/ic_list_music_white"
+            android:id="@+id/img_btn_show_play_list"
+            android:src="@drawable/ic_music_note_white"
             android:layout_width="25dp"
             android:layout_weight="1"
             android:layout_height="25dp" />

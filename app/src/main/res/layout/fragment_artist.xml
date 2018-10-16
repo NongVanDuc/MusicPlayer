@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.FragmentArtist">
     <android.support.v7.widget.RecyclerView
+        android:paddingTop="15dp"
         android:id="@+id/rcv_artist"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

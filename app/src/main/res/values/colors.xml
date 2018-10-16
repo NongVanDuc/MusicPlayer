@@ -12,5 +12,6 @@
     <color name="bgcontrol">#f1f7f6f6</color>
     <color name="colorBlack">#140128</color>
     <color name="coloRed">#e11a62</color>
+    <color name="colorBlue">#339dcb</color>
 
 </resources>

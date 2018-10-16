@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:background="#fff"
-    android:layout_width="wrap_content"
+    android:layout_width="280dp"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:padding="5dp"
+    android:padding="15dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:id="@+id/lrl_play_all"
@@ -24,10 +23,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/coloRed"
-            android:text="@string/play_all"/>
+            android:text="@string/play_all"
+            android:textColor="@color/colorTextBrown" />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/lrl_add_to_play_list"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:gravity="center_vertical"
@@ -43,10 +43,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/coloRed"
+            android:textColor="@color/colorTextBrown"
             android:text="@string/addtolist"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/lrl_set_as_ring_tone"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:gravity="center_vertical"
@@ -62,10 +63,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/coloRed"
+            android:textColor="@color/colorTextBrown"
             android:text="@string/set_to_ring"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/lrl_share"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_margin="5dp"
+            android:id="@+id/img_share_song"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_share"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorTextBrown"
+            android:text="@string/share_song"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lrl_delete_song"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:gravity="center_vertical"
@@ -81,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/coloRed"
+            android:textColor="@color/colorTextBrown"
             android:text="@string/remove"/>
     </LinearLayout>
 

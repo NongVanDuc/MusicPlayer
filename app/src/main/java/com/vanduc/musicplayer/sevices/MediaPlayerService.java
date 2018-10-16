@@ -1,5 +1,6 @@
 package com.vanduc.musicplayer.sevices;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.session.MediaSessionManager;
@@ -26,7 +28,9 @@ import android.util.Log;
 
 import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.fragments.FragmentSong;
+import com.vanduc.musicplayer.interFace.OnNotifiClickListner;
 import com.vanduc.musicplayer.model.Song;
+import com.vanduc.musicplayer.until.ControlUtils;
 import com.vanduc.musicplayer.until.PlaybackStatus;
 import com.vanduc.musicplayer.until.StorageUtil;
 
@@ -56,7 +60,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     private PhoneStateListener phoneStateListener;
     private TelephonyManager telephonyManager;
 
-    private final IBinder mBinder = new LocalBinder();
     // User Interactions
     public static final String ACTION_PLAY = "com.vanduc.musicplayer.ACTION_PLAY";
     public static final String ACTION_PAUSE = "com.vanduc.musicplayer.ACTION_PAUSE";
@@ -68,6 +71,11 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     private MediaSessionManager mediaSessionManager;
     private MediaSessionCompat mediaSession;
     private MediaControllerCompat.TransportControls transportControls;
+    private OnNotifiClickListner onNotifiClickListner;
+
+    public void setOnNotifiClickListner(OnNotifiClickListner onNotifiClickListner) {
+        this.onNotifiClickListner = onNotifiClickListner;
+    }
 
     //AudioPlayer notification ID
     private static final int NOTIFICATION_ID = 101;
@@ -114,6 +122,7 @@ public void updateList(){
     public void playMedia() {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
+            buildNotification(PlaybackStatus.PLAYING);
         }
     }
 
@@ -121,6 +130,7 @@ public void updateList(){
         if (mediaPlayer == null) return;
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
+            buildNotification(PlaybackStatus.PAUSED);
         }
     }
 
@@ -128,6 +138,7 @@ public void updateList(){
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             resumePosition = mediaPlayer.getCurrentPosition();
+            buildNotification(PlaybackStatus.PAUSED);
         }
     }
 
@@ -135,6 +146,7 @@ public void updateList(){
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.seekTo(resumePosition);
             mediaPlayer.start();
+            buildNotification(PlaybackStatus.PLAYING);
         }
     }
     public boolean getStateMedia(){
@@ -265,7 +277,7 @@ public void updateList(){
 
         //Handle Intent action from MediaSession.TransportControls
         handleIncomingActions(intent);
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
     @Override
@@ -389,30 +401,34 @@ public void updateList(){
             public void onPlay() {
                 super.onPlay();
                 resumeMedia();
-                buildNotification(PlaybackStatus.PLAYING);
+                onNotifiClickListner.onNotifiCationClick();
+                //buildNotification(PlaybackStatus.PLAYING);
             }
 
             @Override
             public void onPause() {
                 super.onPause();
                 pauseMedia();
-                buildNotification(PlaybackStatus.PAUSED);
+                onNotifiClickListner.onNotifiCationClick();
+                //buildNotification(PlaybackStatus.PAUSED);
             }
 
             @Override
             public void onSkipToNext() {
                 super.onSkipToNext();
                 skipToNext();
-                updateMetaData();
-                buildNotification(PlaybackStatus.PLAYING);
+                onNotifiClickListner.onNotifiCationClick();
+                //updateMetaData();
+                //buildNotification(PlaybackStatus.PLAYING);
             }
 
             @Override
             public void onSkipToPrevious() {
                 super.onSkipToPrevious();
                 skipToPrevious();
-                updateMetaData();
-                buildNotification(PlaybackStatus.PLAYING);
+                onNotifiClickListner.onNotifiCationClick();
+                //updateMetaData();
+                //buildNotification(PlaybackStatus.PLAYING);
             }
 
             @Override
@@ -431,12 +447,16 @@ public void updateList(){
     }
 
     private void updateMetaData() {
-        Bitmap albumArt = BitmapFactory.decodeResource(getResources(),R.drawable.icon_music); //replace with medias albumArt
+        Bitmap albumArt ;
+        Bitmap bitmap = activeSong.getSmallCover(this);
+        if(bitmap != null){
+            albumArt = bitmap;
+        }
+        else {albumArt = BitmapFactory.decodeResource(getResources(),R.drawable.iconmusic);} //replace with medias albumArt
         // Update the current metadata
         mediaSession.setMetadata(new MediaMetadataCompat.Builder()
                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt)
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, activeSong.getArtist())
-                //.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, activeSong.getAlbum())
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, activeSong.getTitle())
                 .build());
     }
@@ -460,6 +480,8 @@ public void updateList(){
             //reset mediaPlayer
             mediaPlayer.reset();
             initMediaPlayer();
+            updateMetaData();
+            buildNotification(PlaybackStatus.PLAYING);
         }
 
 
@@ -492,6 +514,8 @@ public void updateList(){
         //reset mediaPlayer
         mediaPlayer.reset();
         initMediaPlayer();
+        updateMetaData();
+        buildNotification(PlaybackStatus.PLAYING);
     }
     // end control audio
     // creat notifycationManager
@@ -512,18 +536,23 @@ public void updateList(){
             play_pauseAction = playbackAction(0);
         }
 
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.icon_music); //replace with your own image
+        Bitmap largeIcon ;
+        Bitmap bitmap = activeSong.getSmallCover(this);
+        if(bitmap != null){
+            largeIcon = bitmap;
+        }
+        else {largeIcon = BitmapFactory.decodeResource(getResources(),R.drawable.bg_now_play_ing);} //replace with medias albumArt
 
         // Create a new Notification
-        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+        NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+
                 .setShowWhen(false)
                 // Set the Notification style
-                .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
-                        // Attach our MediaSession token
-                        .setMediaSession(mediaSession.getSessionToken())
-                        // Show our playback controls in the compact notification view.
-                        .setShowActionsInCompactView(0, 1, 2))
+//                .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+//                        // Attach our MediaSession token
+//                        .setMediaSession(mediaSession.getSessionToken())
+//                        // Show our playback controls in the compact notification view.
+//                        .setShowActionsInCompactView(0, 1, 2))
                 // Set the Notification color
                 .setColor(getResources().getColor(R.color.colorPrimary))
                 // Set the large and small icons
@@ -537,8 +566,24 @@ public void updateList(){
                 .addAction(R.drawable.ic_skip_previous, "previous", playbackAction(3))
                 .addAction(notificationAction, "pause", play_pauseAction)
                 .addAction(R.drawable.ic_skip_next, "next", playbackAction(2));
+        if (ControlUtils.isJellyBeanMR1()) {
+            builder.setShowWhen(false);
+        }
 
-        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notificationBuilder.build());
+        if (ControlUtils.isLollipop()) {
+            builder.setVisibility(Notification.VISIBILITY_PUBLIC);
+            android.support.v4.media.app.NotificationCompat.MediaStyle style = new android.support.v4.media.app.NotificationCompat.MediaStyle()
+                    .setMediaSession(mediaSession.getSessionToken())
+                    .setShowActionsInCompactView(0, 1, 2, 3);
+            builder.setStyle(style);
+        }
+        if (ControlUtils.isOreo()) {
+            builder.setColorized(true);
+        }
+
+
+
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, builder.build());
     }
 
     private void removeNotification() {
@@ -596,9 +641,8 @@ public void updateList(){
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        stopMedia();
-        //stop the service
-        stopSelf();
+        skipToNext();
+        onNotifiClickListner.onNotifiCationClick();
     }
 
     @Override
@@ -632,19 +676,6 @@ public void updateList(){
     public void onSeekComplete(MediaPlayer mediaPlayer) {
 
     }
-
-    public boolean isPlaying() {
-        if(mediaPlayer != null){
-            if(mediaPlayer.isPlaying())
-            {
-                return true;
-            }
-            else return false;
-        }
-
-        else return false;
-    }
-
     public String getTimePlay() {
         int durationTime = mediaPlayer.getDuration();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
@@ -662,11 +693,5 @@ public void updateList(){
     }
     public void seekToPos (int pos){
         mediaPlayer.seekTo(pos);
-    }
-
-    public class LocalBinder extends Binder{
-        public MediaPlayerService getService (){
-            return MediaPlayerService.this;
-        }
     }
 }

@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/coloRed"
+            android:textColor="@color/colorTextBrown"
             android:text="@string/play_all"/>
     </LinearLayout>
     <LinearLayout
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/coloRed"
+            android:textColor="@color/colorTextBrown"
             android:text="@string/addtolist"/>
     </LinearLayout>
 

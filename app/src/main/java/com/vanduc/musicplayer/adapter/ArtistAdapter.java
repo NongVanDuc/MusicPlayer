@@ -2,8 +2,11 @@ package com.vanduc.musicplayer.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vanduc.musicplayer.R;
-import com.vanduc.musicplayer.function.MusicPlayer;
+import com.vanduc.musicplayer.dataloader.AlbumLoader;
+import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
+import com.vanduc.musicplayer.dataloader.ArtistAlbumLoader;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
+import com.vanduc.musicplayer.model.Album;
 import com.vanduc.musicplayer.model.Artist;
+import com.vanduc.musicplayer.model.Song;
 
 import java.util.List;
 
@@ -23,9 +30,8 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.AudioHolde
     private Context mContext;
     private List<Artist> mArtists;
     private ItemClickListener mItemClickListener;
-
     public ArtistAdapter(Context context, List<Artist> artists, ItemClickListener itemClickListener) {
-        this.mContext = mContext;
+        this.mContext = context;
         this.mArtists = artists;
         this.mItemClickListener = itemClickListener;
     }
@@ -44,8 +50,14 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.AudioHolde
     @Override
     public void onBindViewHolder(@NonNull AudioHolder holder, int i) {
         holder.bind(mArtists.get(i), mItemClickListener);
-
-
+        AlbumSongLoader songLoader = new AlbumSongLoader(mContext);
+        Album album = ArtistAlbumLoader.getAlbum(mContext,mArtists.get(i).getId());
+        Song songs = songLoader.getSongFromCursor(album.getId());
+        Bitmap bitmapAlbum = songs.getCover(mContext);
+        if(bitmapAlbum != null){
+            holder.imgArtist.setImageBitmap(bitmapAlbum);
+        }
+        else holder.imgArtist.setImageResource(R.drawable.icon_singer);
     }
 
     @Override

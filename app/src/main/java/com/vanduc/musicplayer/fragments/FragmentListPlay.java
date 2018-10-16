@@ -1,6 +1,7 @@
 package com.vanduc.musicplayer.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,8 +22,10 @@ import com.vanduc.musicplayer.dataloader.PlaylistSongLoader;
 import com.vanduc.musicplayer.dialogs.CreatePlaylistDialog;
 import com.vanduc.musicplayer.dialogs.PlayListOptionDialog;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
+import com.vanduc.musicplayer.interFace.UpdateFragment;
 import com.vanduc.musicplayer.model.Playlist;
 import com.vanduc.musicplayer.model.Song;
+import com.vanduc.musicplayer.until.ControlUtils;
 import com.vanduc.musicplayer.until.StorageUtil;
 
 import java.util.ArrayList;
@@ -36,24 +39,39 @@ public class FragmentListPlay extends Fragment {
     private PlayListAdapter mPlayListAdapter;
     private List<Playlist> mPlaylists;
     private LinearLayout mLinearLayout;
-    private LinearLayoutManager layoutManager;
+    private UpdateFragment updateFragment;
     public FragmentListPlay() {
         // Required empty public constructor
     }
 
+    public void setUpdateFragment(UpdateFragment updateFragment) {
+        this.updateFragment = updateFragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        updateFragment = (UpdateFragment) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        if(updateFragment != null){
+            updateFragment.getFragmentListPlay(this);
+        }
+
         return inflater.inflate(R.layout.fragment_list_play, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mLinearLayout = view.findViewById(R.id.lrl_add_list_play);
         mRcvListPlay = view.findViewById(R.id.rcv_play_list);
+        setDataList();
+    }
+    private void setDataList(){
         mPlaylists = PlaylistLoader.getPlaylists(getActivity());
         mPlayListAdapter = new PlayListAdapter(getActivity(), mPlaylists, new ItemClickListener() {
             @Override
@@ -84,21 +102,10 @@ public class FragmentListPlay extends Fragment {
     }
 
     public void updatePlaylists() {
-        mPlaylists.clear();
-        mPlaylists = PlaylistLoader.getPlaylists(getActivity());
-        mPlayListAdapter = new PlayListAdapter(getActivity(), mPlaylists, new ItemClickListener() {
-            @Override
-            public void onItemClick(View view, int postion) {
-
-            }
-
-            @Override
-            public void onIconClick(View view, int postion) {
-                PlayListOptionDialog.newInstance().show(getActivity().getSupportFragmentManager(),"OPTION_MORE");
-            }
-        });
-        mRcvListPlay.setAdapter(mPlayListAdapter);
-        mPlayListAdapter.notifyDataSetChanged();
+        if(mPlaylists != null && mPlaylists.size()>0){
+            mPlaylists.clear();
+            setDataList();
+        }
     }
     private void replaceFragment(Fragment fragment, long id, String title) {
         Bundle bundle = new Bundle();

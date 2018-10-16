@@ -42,7 +42,6 @@ public class SongLoader {
                 int duration = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
 
                 while (cursor.moveToNext()) {
-
                     int ID = cursor.getInt(_id);
                     String ARTIST = cursor.getString(artist);
                     String TITLE = cursor.getString(title);

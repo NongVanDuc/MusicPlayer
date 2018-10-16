@@ -2,6 +2,7 @@
 <LinearLayout
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:background="@drawable/bg_now_play"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragments.FragmentListPlay"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,33 +10,33 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
+            android:background="#bb000000"
             android:layout_height="match_parent"
             >
             <LinearLayout
                 android:id="@+id/lrl_add_list_play"
-                android:layout_marginLeft="10dp"
-                android:padding="10dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/bg_rounded"
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
+                android:paddingLeft="15dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <ImageView
-                    android:src="@drawable/ic_add_yellow"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp" />
                 <TextView
                     android:text="@string/addList"
                     android:layout_width="wrap_content"
                     android:textColor="@color/colorWhite"
                     android:textSize="14sp"
-                    android:textStyle="bold"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content" />
+                <ImageView
+                    android:src="@drawable/ic_add_to_play_list"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp" />
 
             </LinearLayout>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rcv_play_list"
-                app:layoutManager="android.support.v7.widget.GridLayoutManager"
-                app:spanCount="2"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 android:paddingTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

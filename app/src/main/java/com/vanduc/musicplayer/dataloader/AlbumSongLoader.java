@@ -59,6 +59,42 @@ public class AlbumSongLoader {
         }
         return generassongsList;
     }
+    public Song getSongFromCursor(long albumID) {
+        String sortOrder="";
+        Song song = new Song();
+        String selection = "is_music=1 AND title != '' AND album_id=" + albumID;
+//                sortOrder = MediaStore.Song.Media.DATE_ADDED + " desc";
+        cursor = ((Activity) mContext).getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projectionSongs, selection, null, null);
+        ArrayList<Song> generassongsList = new ArrayList<Song>();
+        try {
+            if (cursor != null && cursor.getCount() >= 1) {
+                int _id = cursor.getColumnIndex(MediaStore.Audio.Media._ID);
+                int artist = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+                int album_id = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
+                int title = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
+                int data = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+                int display_name = cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME);
+                int duration = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
+
+                while (cursor.moveToNext()) {
+
+                    int ID = cursor.getInt(_id);
+                    String ARTIST = cursor.getString(artist);
+                    String TITLE = cursor.getString(title);
+                    String DISPLAY_NAME = cursor.getString(display_name);
+                    String DURATION = cursor.getString(duration);
+                    String Path = cursor.getString(data);
+                    song = new Song(ID, album_id, ARTIST, TITLE, Path, DISPLAY_NAME, DURATION);
+
+                }
+            }
+            closeCrs();
+        } catch (Exception e) {
+            closeCrs();
+            e.printStackTrace();
+        }
+        return song;
+    }
     private void closeCrs() {
         if (cursor != null) {
             try {

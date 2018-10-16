@@ -28,7 +28,22 @@ public class ArtistAlbumLoader {
             cursor.close();
         return albumList;
     }
+    public static Album getAlbum(Context context, long id) {
+        Cursor cursor = makeAlbumForArtistCursor(context, id);
+        Album album = new Album();
+        if (cursor != null) {
+            if (cursor.moveToFirst())
+                do {
 
+                    album = new Album(cursor.getLong(0), cursor.getString(1), cursor.getString(2), id, cursor.getInt(3), cursor.getInt(4));
+                }
+                while (cursor.moveToNext());
+
+        }
+        if (cursor != null)
+            cursor.close();
+        return album;
+    }
 
     public static Cursor makeAlbumForArtistCursor(Context context, long artistID) {
 

@@ -1,6 +1,7 @@
 package com.vanduc.musicplayer.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,9 +21,9 @@ import com.vanduc.musicplayer.dataloader.AlbumLoader;
 import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
 import com.vanduc.musicplayer.dialogs.AlbumOptionDialog;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
+import com.vanduc.musicplayer.interFace.UpdateFragment;
 import com.vanduc.musicplayer.model.Album;
 import com.vanduc.musicplayer.model.Song;
-import com.vanduc.musicplayer.screens.MainActivity;
 import com.vanduc.musicplayer.until.StorageUtil;
 
 import java.util.ArrayList;
@@ -35,15 +36,24 @@ public class FragmentAlbum extends Fragment {
     private RecyclerView mRcv;
     private List<Album> mAlbumList;
     private AlbumAdapter mAlbumAdapter;
+    private UpdateFragment updateFragment;
     public FragmentAlbum() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.updateFragment = (UpdateFragment) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        if (updateFragment != null){
+            updateFragment.getFragmentAlbum(this);
+        }
         return inflater.inflate(R.layout.fragment_album, container, false);
     }
 
@@ -54,6 +64,10 @@ public class FragmentAlbum extends Fragment {
         mRcv = (RecyclerView) view.findViewById(R.id.rcv_album_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mRcv.setLayoutManager(linearLayoutManager);
+        setDataList();
+
+    }
+    private void setDataList(){
         mAlbumList = AlbumLoader.getAllAlbums(getActivity());
 
         mAlbumAdapter = new AlbumAdapter(getActivity(), mAlbumList, new ItemClickListener() {
@@ -77,7 +91,6 @@ public class FragmentAlbum extends Fragment {
         });
         mRcv.setAdapter(mAlbumAdapter);
         mAlbumAdapter.notifyDataSetChanged();
-
     }
     private void replaceFragment(Fragment fragment, long id, String title) {
         Bundle bundle = new Bundle();
@@ -88,5 +101,12 @@ public class FragmentAlbum extends Fragment {
         transaction.addToBackStack(null);
         transaction.replace(R.id.fl_main, fragment);
         transaction.commit();
+    }
+    public void updateListAlbum(){
+        if(mAlbumList != null && mAlbumList.size()>0){
+            mAlbumList.clear();
+            setDataList();
+        }
+
     }
 }
