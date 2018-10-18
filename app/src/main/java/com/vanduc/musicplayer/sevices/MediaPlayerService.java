@@ -25,6 +25,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.fragments.FragmentSong;
@@ -113,8 +114,9 @@ public void updateList(){
         }
         try {
             mediaPlayer.prepare();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Không thể phát bài hát !", Toast.LENGTH_SHORT).show();
         }
     }
     // function control media
@@ -268,7 +270,7 @@ public void updateList(){
             try {
                 initMediaSession();
                 initMediaPlayer();
-            } catch (RemoteException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 stopSelf();
             }
@@ -277,7 +279,7 @@ public void updateList(){
 
         //Handle Intent action from MediaSession.TransportControls
         handleIncomingActions(intent);
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override

@@ -27,8 +27,11 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.vanduc.musicplayer.R;
+import com.vanduc.musicplayer.adapter.PlayListAdapter;
 import com.vanduc.musicplayer.adapter.SongAdapter;
+import com.vanduc.musicplayer.dataloader.SongLoader;
 import com.vanduc.musicplayer.interFace.UpdateFragment;
+import com.vanduc.musicplayer.model.Playlist;
 import com.vanduc.musicplayer.model.Song;
 import com.vanduc.musicplayer.screens.HomeActivity;
 
@@ -69,32 +72,6 @@ public class ControlUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
     }
 
-    public static Uri getAlbumArtUri(long albumId) {
-        return ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId);
-    }
-
-    public static String getAlbumArtForFile(String filePath) {
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        mmr.setDataSource(filePath);
-
-        return mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
-    }
-
-    public static final String makeLabel(final Context context, final int pluralInt,
-                                         final int number) {
-        return context.getResources().getQuantityString(pluralInt, number, number);
-    }
-
-    public static int getActionBarHeight(Context context) {
-        int mActionBarHeight;
-        TypedValue mTypedValue = new TypedValue();
-
-        context.getTheme().resolveAttribute(R.attr.actionBarSize, mTypedValue, true);
-
-        mActionBarHeight = TypedValue.complexToDimensionPixelSize(mTypedValue.data, context.getResources().getDisplayMetrics());
-
-        return mActionBarHeight;
-    }
 
     public static final int getSongCountForPlaylist(final Context context, final long playlistId) {
         Cursor c = context.getContentResolver().query(
@@ -114,81 +91,17 @@ public class ControlUtils {
         return 0;
     }
 
-    public static int getBlackWhiteColor(int color) {
-        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
-        if (darkness >= 0.5) {
-            return Color.WHITE;
-        } else return Color.BLACK;
+    public static Uri getSongUri(Song song) {
+        Uri uri = Uri.parse("file:///"+song.getPath());
+        return uri;
     }
 
-    public enum IdType {
-        NA(0),
-        Artist(1),
-        Album(2),
-        Playlist(3);
-
-        public final int mId;
-
-        IdType(final int id) {
-            mId = id;
-        }
-
-        public static IdType getTypeById(int id) {
-            for (IdType type : values()) {
-                if (type.mId == id) {
-                    return type;
-                }
-            }
-
-            throw new IllegalArgumentException("Unrecognized id: " + id);
-        }
-    }
-
-    public static void removeFromPlaylist(final Context context, final long id,
-                                          final long playlistId) {
-        final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
-        final ContentResolver resolver = context.getContentResolver();
-        resolver.delete(uri, MediaStore.Audio.Playlists.Members.AUDIO_ID + " = ? ", new String[]{
-                Long.toString(id)
-        });
-    }
-
-    public static Uri getSongUri(Context context, long id) {
-        final String[] projection = new String[]{
-                BaseColumns._ID, MediaStore.MediaColumns.DATA, MediaStore.Audio.AudioColumns.ALBUM_ID
-        };
-        final StringBuilder selection = new StringBuilder();
-        selection.append(BaseColumns._ID + " IN (");
-        selection.append(id);
-        selection.append(")");
-        final Cursor c = context.getContentResolver().query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection.toString(),
-                null, null);
-
-        if (c == null) {
-            return null;
-        }
-        c.moveToFirst();
-
-
-        try {
-
-            Uri uri = Uri.parse(c.getString(1));
-            c.close();
-
-            return uri;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static void shareTrack(final Context context, long id) {
+    public static void shareTrack(final Context context, Song song) {
 
         try {
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setType("audio/*");
-            share.putExtra(Intent.EXTRA_STREAM, getSongUri(context, id));
+            share.putExtra(Intent.EXTRA_STREAM, getSongUri(song));
             context.startActivity(Intent.createChooser(share, "Share"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -224,6 +137,38 @@ public class ControlUtils {
                     }
                 })
                 .show();
+    }
+    public static void showDeletePlayListDialog(final Context context, final Playlist playList, final PlayListAdapter adapter, final int postion, final ArrayList<Playlist> playlists) {
+        new MaterialDialog.Builder(context)
+                .title(ResUtil.getInstance().getString(R.string.delete))
+                .content(ResUtil.getInstance().getString(R.string.confirm_delete) + " '" + playList.getName() + "' ?")
+                .positiveText("Delete")
+                .negativeText("Cancel")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        deletePlaylist(context, playList);
+                        playlists.remove(postion);
+                        adapter.notifyDataSetChanged();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+    public static boolean renamePlayList(Context context, Playlist playlist,String newName){
+        ContentValues values = new ContentValues(1);
+        values.put(MediaStore.Audio.Playlists.NAME, newName);
+        ContentResolver resolver = context.getContentResolver();
+        if(resolver.update(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI,
+                values, "_id=" + playlist.getId(), null) != -1 ){
+            return true;
+        }
+        else return false;
     }
 
     public static void removeTracks(final Context context, final Song song) {
@@ -325,6 +270,26 @@ public class ControlUtils {
         homeActivity.updateFragmentListPlay();
         Log.i("Song ID:", String.valueOf(songID));
 
+    }
+    public static void deletePlaylist(Context context ,Playlist playListI)
+    {
+        ContentResolver resolver = context.getContentResolver();
+        String where = MediaStore.Audio.Playlists._ID + "=?";
+        String[] whereVal = {String.valueOf(playListI.getId())};
+        resolver.delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, where, whereVal);
+        Toast toast = Toast.makeText(context,String.valueOf(playListI.getName()) + " Deleted", Toast.LENGTH_SHORT);
+        toast.show();
+        return ;
+    }
+    public static void removeFromPlaylist(final Context context, final long id,
+                                          final long playlistId , SongAdapter songAdapter , ArrayList<Song> songArrayList, int postion) {
+        final Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
+        final ContentResolver resolver = context.getContentResolver();
+        resolver.delete(uri, MediaStore.Audio.Playlists.Members.AUDIO_ID + " = ? ", new String[]{
+                Long.toString(id)
+        });
+        songArrayList.remove(postion);
+        songAdapter.notifyDataSetChanged();
     }
 
 }

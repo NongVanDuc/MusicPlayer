@@ -22,7 +22,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.adapter.SongAdapter;
 import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
-import com.vanduc.musicplayer.dialogs.SongOptionDialog;
+import com.vanduc.musicplayer.dialogs.DiaLogSongOption;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.interFace.ItemClickPlaySong;
 import com.vanduc.musicplayer.model.Song;
@@ -91,19 +91,18 @@ public class FragmentAlbumSong extends Fragment {
             AlbumSongLoader albumSongLoader = new AlbumSongLoader(getActivity());
             mSongList = albumSongLoader.getSongsFromCursor(albumId);
             Log.e("onCreate: ", mSongList.size() + "/" + albumId);
-            mSongAdapter = new SongAdapter(getActivity(), mSongList, new ItemClickListener() {
-                @Override
-                public void onItemClick(View view, int postion) {
-                    if(mItemClickPlaySong!=null){
-                        mItemClickPlaySong.onItemClickListener(mSongList,postion);
-                    }
+        mSongAdapter = new SongAdapter(getActivity(), mSongList, new ItemClickPlaySong() {
+            @Override
+            public void onItemClickListener(ArrayList<Song> songList, int postion) {
+                if (mItemClickPlaySong != null) {
+                    mItemClickPlaySong.onItemClickListener(songList, postion);
                 }
+            }
 
-                @Override
-                public void onIconClick(View view, int postion) {
-                    //SongOptionDialog.newInstance().show(getActivity().getSupportFragmentManager(), "OPTION_MORE");
-                }
-            });
+            @Override
+            public void onIconClickListener(ArrayList<Song> songList, int postion) {
+            }
+        });
             mRcvListAlbumSong.setAdapter(mSongAdapter);
             mSongAdapter.notifyDataSetChanged();
 

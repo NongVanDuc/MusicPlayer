@@ -13,19 +13,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.adapter.PlayListAdapter;
 import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
 import com.vanduc.musicplayer.dataloader.PlaylistLoader;
 import com.vanduc.musicplayer.dataloader.PlaylistSongLoader;
+import com.vanduc.musicplayer.dataloader.SongLoader;
 import com.vanduc.musicplayer.dialogs.CreatePlaylistDialog;
-import com.vanduc.musicplayer.dialogs.PlayListOptionDialog;
+import com.vanduc.musicplayer.dialogs.DiaLogPlayListOption;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.interFace.UpdateFragment;
 import com.vanduc.musicplayer.model.Playlist;
 import com.vanduc.musicplayer.model.Song;
 import com.vanduc.musicplayer.until.ControlUtils;
+import com.vanduc.musicplayer.until.ResUtil;
 import com.vanduc.musicplayer.until.StorageUtil;
 
 import java.util.ArrayList;
@@ -37,7 +40,7 @@ import java.util.List;
 public class FragmentListPlay extends Fragment {
     private RecyclerView mRcvListPlay;
     private PlayListAdapter mPlayListAdapter;
-    private List<Playlist> mPlaylists;
+    private ArrayList<Playlist> mPlaylists;
     private LinearLayout mLinearLayout;
     private UpdateFragment updateFragment;
     public FragmentListPlay() {
@@ -78,17 +81,26 @@ public class FragmentListPlay extends Fragment {
             public void onItemClick(View view, int postion) {
                 long playListId = mPlaylists.get(postion).getId();
                 String title = mPlaylists.get(postion).getName();
+                StorageUtil storage = new StorageUtil(getActivity());
                 replaceFragment(new FragmentPlayListSong(),playListId,title);
                 ArrayList<Song> mSongList;
                 mSongList = PlaylistSongLoader.getSongsInPlaylist(getActivity(),playListId);
-                StorageUtil storage = new StorageUtil(getActivity());
-                storage.storeAudio(mSongList);
+                if(mSongList.size() <=0){
+                    SongLoader songLoader = new SongLoader(getContext());
+                    mSongList = songLoader.getSongsFromCursor();
+                    if(mSongList.size()>0){
+                        storage.storeAudio(mSongList);
+                    }
+                    else Toast.makeText(getActivity(), ResUtil.getInstance().getString(R.string.no_song), Toast.LENGTH_SHORT).show();
+                }
+                else storage.storeAudio(mSongList);
 
             }
 
             @Override
             public void onIconClick(View view, int postion) {
-                PlayListOptionDialog.newInstance().show(getActivity().getSupportFragmentManager(),"OPTION_MORE");
+                DiaLogPlayListOption diaLogPlayListOption = new DiaLogPlayListOption(getActivity(),postion,mPlaylists,mPlayListAdapter);
+                diaLogPlayListOption.show();
             }
         });
         mRcvListPlay.setAdapter(mPlayListAdapter);
@@ -102,10 +114,8 @@ public class FragmentListPlay extends Fragment {
     }
 
     public void updatePlaylists() {
-        if(mPlaylists != null && mPlaylists.size()>0){
             mPlaylists.clear();
             setDataList();
-        }
     }
     private void replaceFragment(Fragment fragment, long id, String title) {
         Bundle bundle = new Bundle();

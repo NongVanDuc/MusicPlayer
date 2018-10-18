@@ -13,17 +13,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.adapter.AlbumAdapter;
 import com.vanduc.musicplayer.common.Common;
 import com.vanduc.musicplayer.dataloader.AlbumLoader;
 import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
+import com.vanduc.musicplayer.dataloader.SongLoader;
 import com.vanduc.musicplayer.dialogs.AlbumOptionDialog;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.interFace.UpdateFragment;
 import com.vanduc.musicplayer.model.Album;
 import com.vanduc.musicplayer.model.Song;
+import com.vanduc.musicplayer.until.ResUtil;
 import com.vanduc.musicplayer.until.StorageUtil;
 
 import java.util.ArrayList;
@@ -80,7 +83,15 @@ public class FragmentAlbum extends Fragment {
                 AlbumSongLoader albumSongLoader = new AlbumSongLoader(getActivity());
                 mSongList = albumSongLoader.getSongsFromCursor(albumId);
                 StorageUtil storage = new StorageUtil(getActivity());
-                storage.storeAudio(mSongList);
+                if(mSongList.size() <=0){
+                    SongLoader songLoader = new SongLoader(getContext());
+                    mSongList = songLoader.getSongsFromCursor();
+                    if(mSongList.size()>0){
+                        storage.storeAudio(mSongList);
+                    }
+                    else Toast.makeText(getActivity(), ResUtil.getInstance().getString(R.string.no_song), Toast.LENGTH_SHORT).show();
+                }
+                else storage.storeAudio(mSongList);
 
             }
 

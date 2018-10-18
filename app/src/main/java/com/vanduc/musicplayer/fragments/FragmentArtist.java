@@ -20,7 +20,6 @@ import com.vanduc.musicplayer.dataloader.ArtistLoader;
 import com.vanduc.musicplayer.dataloader.PlaylistLoader;
 import com.vanduc.musicplayer.dataloader.PlaylistSongLoader;
 import com.vanduc.musicplayer.dialogs.AlbumOptionDialog;
-import com.vanduc.musicplayer.dialogs.PlayListOptionDialog;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.interFace.UpdateFragment;
 import com.vanduc.musicplayer.model.Artist;
@@ -80,6 +79,7 @@ public class FragmentArtist extends Fragment {
                 long artisId = mArtistList.get(postion).getId();
                 String title = mArtistList.get(postion).getName();
                 Common.replaceFragment(getActivity().getSupportFragmentManager(), new FragmentArtistAlbum(),artisId,title);
+
             }
 
             @Override

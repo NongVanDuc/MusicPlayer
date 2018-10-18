@@ -119,7 +119,10 @@ public class Song implements Serializable {
         }
         return curThumb;
     }
-
+    public Uri getUriImage(){
+        Uri uri = Uri.parse("content://media/external/audio/media/" + getId() + "/albumart");
+        return uri;
+    };
     public Bitmap getCover(Context context) {
 
         // ImageLoader.getInstance().getDiskCache().g

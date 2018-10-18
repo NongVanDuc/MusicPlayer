@@ -24,7 +24,7 @@
     <string name="share_song">Chia sẻ bài hát</string>
     <string name="deleted">Đã xóa 1 bài hát </string>
     <string name="delete">Xóa bài hát ?</string>
-    <string name="confirm_delete">Bạn có chắc chắn muốn xóa bài hát </string>
+    <string name="confirm_delete">Bạn có chắc chắn muốn xóa </string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -32,4 +32,11 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="search">Tìm tên bài hát ...</string>
+    <string name="no_song">Không có bài hát nào trong thiết bị của bạn !</string>
+    <string name="no_song_lits">Không có bài hát nào trong playList !</string>
+    <string name="err_play_song">Không thể phát bài hát !</string>
+    <string name="feed_back_title">Feed Back</string>
+    <string name="feed_back">Bạn chưa hài lòng về Ứng dụng, hãy gửi feedBack về cho chúng tôi !</string>
+    <string name="need_permission">Bạn cần cấp quyền cho ứng dụng để cài làm nhạc chuông !</string>
 </resources>

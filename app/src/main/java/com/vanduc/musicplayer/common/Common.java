@@ -19,4 +19,14 @@ public class Common {
         transaction.replace(R.id.fl_main, fragment);
         transaction.commit();
     }
+    public static String forMatSongName(String name){
+        String songName="";
+        if(name.length()>30){
+            songName = name.substring(0,26) +"...";
+        }
+        else {
+            songName = name;
+        }
+        return songName;
+    }
 }

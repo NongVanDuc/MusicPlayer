@@ -38,7 +38,6 @@
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/toolBar"
                         app:theme="@style/ToolbarColoredBackArrow"
-                        app:navigationIcon="@drawable/ic_home"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize">
 
@@ -47,10 +46,10 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="15dp"
-                        android:id="@+id/icon_search"
+                        android:id="@+id/img_search"
                         android:src="@drawable/ic_search"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_50sdp" />
 
                 </RelativeLayout>
 

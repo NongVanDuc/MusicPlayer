@@ -15,12 +15,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.adapter.AlbumAdapter;
 import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
 import com.vanduc.musicplayer.dataloader.ArtistAlbumLoader;
-import com.vanduc.musicplayer.dialogs.SongOptionDialog;
+import com.vanduc.musicplayer.dataloader.SongLoader;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.model.Album;
 import com.vanduc.musicplayer.model.Song;
@@ -86,17 +87,25 @@ public class FragmentArtistAlbum extends Fragment {
             @Override
             public void onItemClick(View view, int postion) {
                 long albumId = mAlbumList.get(postion).getId();
-                String title = mAlbumList.get(postion).getArtistName();
+                String title = mAlbumList.get(postion).getTitle();
                 replaceFragment(new FragmentAlbumSong(),albumId,title);
                 ArrayList<Song> mSongList;
                 AlbumSongLoader albumSongLoader = new AlbumSongLoader(getActivity());
                 mSongList = albumSongLoader.getSongsFromCursor(albumId);
                 StorageUtil storage = new StorageUtil(getActivity());
-                storage.storeAudio(mSongList);
+                if(mSongList.size() <=0){
+                    SongLoader songLoader = new SongLoader(getContext());
+                    mSongList = songLoader.getSongsFromCursor();
+                    if(mSongList.size()>0){
+                        storage.storeAudio(mSongList);
+                    }
+                    else Toast.makeText(getActivity(), ResUtil.getInstance().getString(R.string.no_song), Toast.LENGTH_SHORT).show();
+                }
+                else storage.storeAudio(mSongList);
             }
             @Override
             public void onIconClick(View view, int postion) {
-               // SongOptionDialog.newInstance().show(getActivity().getSupportFragmentManager(),"OPTION_MORE");
+
             }
         });
         rcvAlbum.setAdapter(mAlbumAdapter);

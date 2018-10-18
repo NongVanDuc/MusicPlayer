@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.vanduc.musicplayer.R;
+import com.vanduc.musicplayer.common.Common;
 import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.model.Album;
@@ -46,11 +49,15 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AudioHolder>
         holder.bind(mAlbum.get(i), mItemClickListener);
         AlbumSongLoader songLoader = new AlbumSongLoader(mContext);
         Song songs = songLoader.getSongFromCursor(mAlbum.get(i).getId());
-        Bitmap bitmapAlbum = songs.getCover(mContext);
-        if(bitmapAlbum != null){
-            holder.imgAlbum.setImageBitmap(bitmapAlbum);
-        }
-        else holder.imgAlbum.setImageResource(R.drawable.icon_album);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.icon_album)
+                .error(R.drawable.icon_album);
+        Glide.with(mContext)
+                .applyDefaultRequestOptions(options)
+                .load(songs.getUriImage())
+
+                .into(holder.imgAlbum);
 
 
 
@@ -81,7 +88,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AudioHolder>
 //            tvArtistName.setText(item.getName());
 //            tvCountSong.setText(String.valueOf(item.getSongCount()));
 //            tvCountArtis.setText(String.valueOf(item.getAlbumCount()));
-            tvAlbumName.setText(item.getTitle());
+            tvAlbumName.setText(Common.forMatSongName(item.getTitle()));
             tvArtistNameAlbum.setText(item.getArtistName());
             tvCountSongAlbum.setText(String.valueOf(item.getSongCount()));
             itemView.setOnClickListener(new View.OnClickListener() {

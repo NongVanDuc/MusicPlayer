@@ -22,10 +22,12 @@ import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.adapter.SongAdapter;
 import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
 import com.vanduc.musicplayer.dataloader.PlaylistSongLoader;
-import com.vanduc.musicplayer.dialogs.SongOptionDialog;
+import com.vanduc.musicplayer.dialogs.DiaLogSongOption;
+import com.vanduc.musicplayer.interFace.IconClickListener;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.interFace.ItemClickPlaySong;
 import com.vanduc.musicplayer.model.Song;
+import com.vanduc.musicplayer.screens.HomeActivity;
 import com.vanduc.musicplayer.until.ResUtil;
 
 import java.util.ArrayList;
@@ -42,7 +44,8 @@ public class FragmentPlayListSong extends Fragment {
     private Toolbar toolBar;
     private Activity activity ;
     private ItemClickPlaySong mItemClickPlaySong;
-
+    private IconClickListener mIconClickListener;
+    private long playListId;
     public FragmentPlayListSong() {
         // Required empty public constructor
     }
@@ -69,7 +72,7 @@ public class FragmentPlayListSong extends Fragment {
         mRcvListAlbumSong = view.findViewById(R.id.rcv_album_song);
         toolBar = (Toolbar) view.findViewById(R.id.toolBar);
         Bundle bundle = this.getArguments();
-        long playListId = bundle.getLong(KEY_PLAY_LIST_ID, -1);
+        playListId = bundle.getLong(KEY_PLAY_LIST_ID, -1);
         String title = bundle.getString(KEY_TITLE, "Music");
         if(title.equals("<unknown>")){
             toolBar.setTitle(ResUtil.getInstance().getString(R.string.unknown_album));
@@ -88,17 +91,22 @@ public class FragmentPlayListSong extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mRcvListAlbumSong.setLayoutManager(linearLayoutManager);
         mSongList = PlaylistSongLoader.getSongsInPlaylist(getActivity(),playListId);
-        mSongAdapter = new SongAdapter(getActivity(), mSongList, new ItemClickListener() {
+        mSongAdapter = new SongAdapter(getActivity(), mSongList, new ItemClickPlaySong() {
             @Override
-            public void onItemClick(View view, int postion) {
-                if(mItemClickPlaySong!=null){
-                    mItemClickPlaySong.onItemClickListener(mSongList,postion);
+            public void onItemClickListener(ArrayList<Song> songList, int postion) {
+                if (mItemClickPlaySong != null) {
+                    mItemClickPlaySong.onItemClickListener(songList, postion);
                 }
             }
 
             @Override
-            public void onIconClick(View view, int postion) {
-                //SongOptionDialog.newInstance().show(getActivity().getSupportFragmentManager(), "OPTION_MORE");
+            public void onIconClickListener(ArrayList<Song> songList, int postion) {
+                DiaLogSongOption diaLogSongOption = new DiaLogSongOption((HomeActivity)getActivity(), postion, mSongList, mSongAdapter,true,playListId);
+                diaLogSongOption.show();
+
+                if (mIconClickListener != null) {
+                    mIconClickListener.onItemClickListener(songList, postion);
+                }
             }
         });
         mRcvListAlbumSong.setAdapter(mSongAdapter);

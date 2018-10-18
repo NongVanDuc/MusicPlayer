@@ -16,7 +16,7 @@ public class PlaylistLoader {
     static ArrayList<Playlist> mPlaylistList;
     private static Cursor mCursor;
 
-    public static List<Playlist> getPlaylists(Context context) {
+    public static ArrayList<Playlist> getPlaylists(Context context) {
 
         mPlaylistList = new ArrayList<>();
 

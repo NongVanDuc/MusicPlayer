@@ -48,6 +48,7 @@
             android:layout_below="@+id/tv_song_name"
             android:layout_centerHorizontal="true"
             android:textSize="14sp"
+            android:padding="@dimen/_5sdp"
             android:id="@+id/tv_singer_name"
             android:text="..."
             android:textColor="@color/colorBrown"
