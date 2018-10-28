@@ -3,27 +3,26 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_infor"
-    android:layout_above="@+id/rl_control"
-    android:layout_below="@+id/lrl_control_bottom"
     android:layout_height="wrap_content">
         <FrameLayout
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/lrl_control_bottom"
             android:id="@+id/fl_list_play_ing"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_300sdp"
+            android:layout_height="@dimen/_280sdp"
             >
-            <ImageView
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_gravity="center"
                 android:id="@+id/img_playing_music"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_250sdp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/bg_now_play_ing" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/music_image" />
             <android.support.v7.widget.RecyclerView
-                android:padding="5dp"
-                android:background="#43212121"
                 android:visibility="gone"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 android:id="@+id/rcv_list_play_ing"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -48,7 +47,6 @@
             android:layout_below="@+id/tv_song_name"
             android:layout_centerHorizontal="true"
             android:textSize="14sp"
-            android:padding="@dimen/_5sdp"
             android:id="@+id/tv_singer_name"
             android:text="..."
             android:textColor="@color/colorBrown"
@@ -60,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <SeekBar
+                android:padding="10dp"
                 android:progressBackgroundTint="@color/colorWhite"
                 android:id="@+id/sb_play"
                 android:layout_width="match_parent"

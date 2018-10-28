@@ -10,7 +10,7 @@ import com.vanduc.musicplayer.fragments.FragmentAlbum;
 import com.vanduc.musicplayer.fragments.FragmentArtist;
 import com.vanduc.musicplayer.fragments.FragmentListPlay;
 import com.vanduc.musicplayer.fragments.FragmentSong;
-import com.vanduc.musicplayer.until.ResUtil;
+import com.vanduc.musicplayer.util.ResUtil;
 
 import java.util.ArrayList;
 import java.util.List;

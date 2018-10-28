@@ -4,17 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_now_play"
+    android:background="#62000000"
     tools:context=".fragments.FragmentArtistAlbum">
     <LinearLayout
         android:layout_width="match_parent"
-        android:background="#38000000"
         android:orientation="vertical"
         android:layout_height="match_parent">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolBar"
             app:theme="@style/CustomActionBar"
-            android:background="#96000000"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
@@ -24,8 +22,8 @@
             android:orientation="vertical"
             android:layout_height="match_parent">
             <android.support.v7.widget.RecyclerView
-                android:background="#bb000000"
-                android:paddingTop="15dp"
+                android:clipToPadding="false"
+                android:layout_marginTop="15dp"
                 android:id="@+id/rcv_album"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

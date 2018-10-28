@@ -1,46 +1,30 @@
 package com.vanduc.musicplayer.fragments;
 
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.adapter.SongAdapter;
-import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
 import com.vanduc.musicplayer.dialogs.DiaLogSongOption;
 import com.vanduc.musicplayer.interFace.IconClickListener;
-import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.interFace.ItemClickPlaySong;
-import com.vanduc.musicplayer.interFace.UpdateFragment;
 import com.vanduc.musicplayer.model.Song;
 import com.vanduc.musicplayer.dataloader.SongLoader;
 import com.vanduc.musicplayer.screens.HomeActivity;
-import com.vanduc.musicplayer.until.StorageUtil;
+import com.vanduc.musicplayer.util.StorageUtil;
 
 import java.util.ArrayList;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,7 +83,7 @@ public class FragmentSong extends Fragment {
         mSongLoader = new SongLoader(getActivity());
         mSongList = mSongLoader.getSongsFromCursor();
         StorageUtil storage = new StorageUtil(getActivity());
-        storage.storeAudio(mSongList);
+        //storage.storeAudio(mSongList);
         //show Recycleview
 
         songAdapter = new SongAdapter(getActivity(), mSongList, new ItemClickPlaySong() {

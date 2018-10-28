@@ -58,8 +58,8 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.AudioHolde
         Song songs = songLoader.getSongFromCursor(album.getId());
         RequestOptions options = new RequestOptions()
                 .centerCrop()
-                .placeholder(R.drawable.icon_singer)
-                .error(R.drawable.icon_singer);
+                .placeholder(R.drawable.music_image)
+                .error(R.drawable.music_image);
         Glide.with(mContext)
                 .applyDefaultRequestOptions(options)
                 .load(songs.getUriImage())

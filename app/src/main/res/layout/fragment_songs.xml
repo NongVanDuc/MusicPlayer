@@ -11,11 +11,12 @@
     sothree:umanoPanelHeight="60dp"
     sothree:umanoShadowHeight="2dp">
     <LinearLayout
+        android:paddingTop="15dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
-            android:paddingTop="15dp"
+
             android:id="@+id/rcv_list_music"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

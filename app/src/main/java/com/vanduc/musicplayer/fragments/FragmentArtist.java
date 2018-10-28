@@ -11,22 +11,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.adapter.ArtistAdapter;
-import com.vanduc.musicplayer.adapter.PlayListAdapter;
 import com.vanduc.musicplayer.common.Common;
 import com.vanduc.musicplayer.dataloader.ArtistLoader;
-import com.vanduc.musicplayer.dataloader.PlaylistLoader;
-import com.vanduc.musicplayer.dataloader.PlaylistSongLoader;
 import com.vanduc.musicplayer.dialogs.AlbumOptionDialog;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.interFace.UpdateFragment;
 import com.vanduc.musicplayer.model.Artist;
-import com.vanduc.musicplayer.model.Song;
-import com.vanduc.musicplayer.until.StorageUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -79,6 +74,8 @@ public class FragmentArtist extends Fragment {
                 long artisId = mArtistList.get(postion).getId();
                 String title = mArtistList.get(postion).getName();
                 Common.replaceFragment(getActivity().getSupportFragmentManager(), new FragmentArtistAlbum(),artisId,title);
+                RelativeLayout relativeLayout= getActivity().findViewById(R.id.rll_root_view);
+                relativeLayout.setVisibility(View.GONE);
 
             }
 

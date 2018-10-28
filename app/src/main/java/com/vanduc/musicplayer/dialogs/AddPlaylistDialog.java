@@ -11,8 +11,8 @@ import com.vanduc.musicplayer.R;
 import com.vanduc.musicplayer.dataloader.PlaylistLoader;
 import com.vanduc.musicplayer.model.Playlist;
 import com.vanduc.musicplayer.model.Song;
-import com.vanduc.musicplayer.until.ControlUtils;
-import com.vanduc.musicplayer.until.ResUtil;
+import com.vanduc.musicplayer.util.ControlUtils;
+import com.vanduc.musicplayer.util.ResUtil;
 
 import java.util.List;
 

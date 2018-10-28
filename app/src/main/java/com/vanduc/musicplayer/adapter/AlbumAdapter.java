@@ -1,7 +1,6 @@
 package com.vanduc.musicplayer.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import com.vanduc.musicplayer.dataloader.AlbumSongLoader;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.model.Album;
 import com.vanduc.musicplayer.model.Song;
-import com.vanduc.musicplayer.until.ImageUtils;
 
 import java.util.List;
 

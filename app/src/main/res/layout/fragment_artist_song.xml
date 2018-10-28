@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_now_play"
+    android:background="#62000000"
         tools:context=".fragments.FragmentArtistSong">
         <LinearLayout
             android:layout_width="match_parent"
@@ -12,15 +12,14 @@
             android:layout_height="match_parent">
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolBar"
-                android:background="#96000000"
                 app:theme="@style/CustomActionBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize">
 
             </android.support.v7.widget.Toolbar>
             <android.support.v7.widget.RecyclerView
-                android:background="#bb000000"
-                android:paddingTop="15dp"
+                android:clipToPadding="false"
+                android:layout_marginTop="15dp"
                 android:id="@+id/rcv_album_song"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

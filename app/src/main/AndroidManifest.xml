@@ -27,9 +27,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".sevices.MediaPlayerService" />
+        <service
+            android:exported="false"
+            android:enabled="true"
+            android:name=".sevices.MediaPlayerService" />
 
-        <activity android:name=".screens.SearchActivity" />
         <activity
             android:name=".screens.HomeActivity"
             android:label="@string/app_name"

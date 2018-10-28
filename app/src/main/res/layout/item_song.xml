@@ -24,7 +24,7 @@
         android:layout_toRightOf="@+id/img_singer"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/tv_song_name"
+            android:id="@+id/tv_song_name_item"
             android:text="Anh Đã Quen Với Cô Đơn "
             android:textColor="@android:color/white"
             android:textSize="14sp"
@@ -34,7 +34,7 @@
         <TextView
             android:id="@+id/tv_singer"
             android:text="Soobin Hoàng Sơn"
-            android:layout_below="@+id/tv_song_name"
+            android:layout_below="@+id/tv_song_name_item"
             android:layout_toRightOf="@+id/img_singer"
             android:layout_marginLeft="10dp"
             android:textStyle="normal"

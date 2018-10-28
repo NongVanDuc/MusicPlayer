@@ -7,10 +7,9 @@ import android.provider.BaseColumns;
 import android.provider.MediaStore;
 
 import com.vanduc.musicplayer.model.Playlist;
-import com.vanduc.musicplayer.until.ControlUtils;
+import com.vanduc.musicplayer.util.ControlUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PlaylistLoader {
     static ArrayList<Playlist> mPlaylistList;

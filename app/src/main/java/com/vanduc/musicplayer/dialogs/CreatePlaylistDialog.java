@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.vanduc.musicplayer.fragments.FragmentListPlay;
 import com.vanduc.musicplayer.model.Song;
-import com.vanduc.musicplayer.until.ControlUtils;
+import com.vanduc.musicplayer.util.ControlUtils;
 
 public class CreatePlaylistDialog extends DialogFragment {
 

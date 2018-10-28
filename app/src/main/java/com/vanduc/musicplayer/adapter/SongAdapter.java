@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -20,6 +23,7 @@ import com.vanduc.musicplayer.interFace.IconClickListener;
 import com.vanduc.musicplayer.interFace.ItemClickListener;
 import com.vanduc.musicplayer.interFace.ItemClickPlaySong;
 import com.vanduc.musicplayer.model.Song;
+import com.vanduc.musicplayer.sevices.MediaPlayerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,12 +58,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.AudioHolder> i
         holder.bind(mListSong.get(i), mItemClickPlaySong);
         RequestOptions options = new RequestOptions()
                 .centerCrop()
-                .placeholder(R.drawable.icon_music)
-                .error(R.drawable.icon_music);
+                .placeholder(R.drawable.music_image)
+                .error(R.drawable.music_image);
         Glide.with(mContext)
                 .applyDefaultRequestOptions(options)
                 .load(mListSong.get(i).getUriImage())
-
                 .into(holder.imgSinger);
     }
 
@@ -111,7 +114,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.AudioHolder> i
         public AudioHolder(@NonNull View itemView) {
             super(itemView);
             imgSinger = (CircleImageView)itemView.findViewById(R.id.img_singer);
-            tvSongName = (TextView)itemView.findViewById(R.id.tv_song_name);
+            tvSongName = (TextView)itemView.findViewById(R.id.tv_song_name_item);
             tvSinger = (TextView)itemView.findViewById(R.id.tv_singer);
             imgMoreOption = (ImageView) itemView.findViewById(R.id.img_song_more_option);
 
@@ -139,6 +142,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.AudioHolder> i
                    itemClickListener.onIconClickListener(mListSong,getAdapterPosition());
                 }
             });
+
         }
     }
 }
